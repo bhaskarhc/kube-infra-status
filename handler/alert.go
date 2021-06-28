@@ -16,7 +16,7 @@ import (
 func NotifyStatus(sa AlertSlack) {
 	data := SlackClient{
 		UserName:   fmt.Sprintf("*%s* : %s", os.Getenv("CNAME"), sa.Username),
-		WebHookUrl: "https://hooks.slack.com/services/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",
+		WebHookUrl: "https://hooks.slack.com/services/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",
 		Channel:    "#test",
 	}
 	text := SimpleSlackRequest{
@@ -28,17 +28,6 @@ func NotifyStatus(sa AlertSlack) {
 	if err != nil {
 		fmt.Print(err)
 	}
-
-}
-
-func PrettyPrint(i interface{}) {
-	s, err := json.MarshalIndent(i, "", "\t")
-	if err != nil {
-		panic(err.Error())
-	}
-	fmt.Print("\n*--->\t*--->\t [ Start ] \t*--->\t*--->\n")
-	fmt.Print(string(s))
-	fmt.Print("\n*--->\t*--->\t [ END ] \t*--->\t*--->\n")
 
 }
 
@@ -185,4 +174,15 @@ func (sc SlackClient) sendHttpRequest(slackRequest SlackMessage) error {
 		return errors.New("Non-ok response returned from Slack")
 	}
 	return nil
+}
+
+func PrettyPrint(i interface{}) {
+	s, err := json.MarshalIndent(i, "", "\t")
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Print("\n*--->\t*--->\t [ Start ] \t*--->\t*--->\n")
+	fmt.Print(string(s))
+	fmt.Print("\n*--->\t*--->\t [ END ] \t*--->\t*--->\n")
+
 }
