@@ -16,7 +16,7 @@ import (
 func NotifyStatus(sa AlertSlack) {
 	data := SlackClient{
 		UserName:   fmt.Sprintf("*%s* : %s", os.Getenv("CNAME"), sa.Username),
-		WebHookUrl: "https://hooks.slack.com/services/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",
+		WebHookUrl: os.Getenv("SLACKHOOK"),
 		Channel:    "#test",
 	}
 	text := SimpleSlackRequest{
