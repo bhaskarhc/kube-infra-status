@@ -19,11 +19,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"path/filepath"
 	"time"
 
 	"github.com/bhaskarhc/kube-go-client/handler"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 
@@ -50,7 +52,11 @@ func main() {
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
-		panic(err.Error())
+		fmt.Print("unable to get outofCluster configuration", err.Error())
+		config, err = rest.InClusterConfig()
+		if err != nil {
+			panic(err.Error())
+		}
 	}
 
 	// create the clientset
