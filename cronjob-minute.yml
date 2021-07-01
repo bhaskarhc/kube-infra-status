@@ -1,0 +1,59 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  creationTimestamp: "2021-06-28T13:38:40Z"
+  name: kubeinfra
+  namespace: default
+  resourceVersion: "657472505"
+  selfLink: /apis/batch/v1beta1/namespaces/default/cronjobs/kubeinfra
+  uid: be5199dc-fb98-4696-9991-13778b98912d
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: kubeinfra
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+          - image: bhaskarjb/kube-infra-status:latest
+            imagePullPolicy: Always
+            name: kubeinfra
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: OnFailure
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+  schedule: '*/1 * * * *'
+  successfulJobsHistoryLimit: 3
+  suspend: false
+status: {}
+---
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kube-app
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: kube-app
+            image: bhaskarjb/kube-infra-status:latest
+            imagePullPolicy: Always
+            env:
+            - name: CNAME
+              value: "mayadata-production-gcp"
+            - name: SLACKHOOK
+              value: "https://hooks.slack.com/services/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"
+          restartPolicy: OnFailure
